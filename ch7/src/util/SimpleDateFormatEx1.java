@@ -15,6 +15,7 @@ public class SimpleDateFormatEx1 {
 
 	public static void main(String[] args) {
 		//시스템 날짜와 시간 가져오기.
+		// 주석변경
 		Date d = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat();
 		
