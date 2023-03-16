@@ -14,6 +14,7 @@ import java.util.Date;
 public class SimpleDateFormatEx1 {
 
 	public static void main(String[] args) {
+		//이건 이클립스 수정사항
 		Date d = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat();
 		
