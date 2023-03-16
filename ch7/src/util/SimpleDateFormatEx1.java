@@ -17,6 +17,7 @@ public class SimpleDateFormatEx1 {
 		//이건 이클립스 수정사항
 		Date d = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat();
+		//깃헙에서 수정했음
 		
 		System.out.println(sdf);
 		System.out.println(d);
