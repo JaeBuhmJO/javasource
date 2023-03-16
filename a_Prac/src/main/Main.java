@@ -1,26 +1,31 @@
 package main;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class Main {
 
 	public static void main(String[] args) {
-		try (Scanner scanner = new Scanner(System.in)) {
-			int n = scanner.nextInt();
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out))) {
+			int n = Integer.parseInt(br.readLine());
 			int numarr[] = new int[n];
-			
 			for (int i = 0; i < n; i++) {
-				int num = scanner.nextInt();
+				int num = Integer.parseInt(br.readLine());
 				numarr[i] = num;
 			}
-			//시간 초과
 			Arrays.sort(numarr);
-            
+
 			for (int i : numarr) {
-			System.out.println(i);
+				bw.write(Integer.toString(i));
+				bw.newLine();
 			}
-			
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
