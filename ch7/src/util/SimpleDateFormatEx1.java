@@ -15,10 +15,10 @@ public class SimpleDateFormatEx1 {
 
 	public static void main(String[] args) {
 		//시스템 날짜와 시간 가져오기.
-		// 주석변경
 		Date d = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat();
-		
+
+		//날짜와 시간을 특정 형식에 맞춰 출력 가능하게 하는 클래스
 		System.out.println(sdf);
 		System.out.println(d);
 		System.out.println(sdf.format(d));
