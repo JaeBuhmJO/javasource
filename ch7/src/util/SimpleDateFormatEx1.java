@@ -14,6 +14,7 @@ import java.util.Date;
 public class SimpleDateFormatEx1 {
 
 	public static void main(String[] args) {
+		//이클립스에서 psvm 바로 아래 주석
 		Date d = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat();
 		
