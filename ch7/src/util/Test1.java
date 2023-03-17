@@ -13,4 +13,9 @@ public class Test1 {
 		return 0;
 	}
 
+	@Override
+	public String toString() {
+		return "Test1 [name=" + name + ", no=" + no + ", tel=" + tel + "]";
+	}
+
 }
