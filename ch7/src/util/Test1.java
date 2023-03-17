@@ -6,6 +6,13 @@ public class Test1 {
 	private int no;
 	private String tel;
 
+	public Test1(String name, int no, String tel) {
+		super();
+		this.name = name;
+		this.no = no;
+		this.tel = tel;
+	}
+
 	public void print() {
 	}
 
