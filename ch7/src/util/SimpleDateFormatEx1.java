@@ -14,6 +14,7 @@ import java.util.Date;
 public class SimpleDateFormatEx1 {
 
 	public static void main(String[] args) {
+		//시스템 날짜와 시간 객체
 		//깃헙에서 psvm 바로아래 주석
 		Date d = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat();
