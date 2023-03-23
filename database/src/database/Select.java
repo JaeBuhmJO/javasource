@@ -49,6 +49,7 @@ public class Select {
 
 			// emp 테이블에 있는 내용 가져오기
 //			String sql = "SELECT * FROM EMP";
+//			String sql = "SELECT * FROM EMP where deptno = 20";
 			String sql = "SELECT * FROM EMP where deptno = 20";
 
 			// server로 sql 구문 전송

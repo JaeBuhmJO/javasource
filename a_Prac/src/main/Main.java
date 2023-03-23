@@ -1,37 +1,28 @@
 package main;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class Main {
 
-	public static void main(String[] args) {
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out))) {
-			Set<String> set = new HashSet<>();
-			
-			String input[] = br.readLine().split(" ");
-			int n = Integer.parseInt(input[0]);
-			int m = Integer.parseInt(input[1]);
+	public static void main(String args[]) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+
+			StringBuilder sb = new StringBuilder();
+			int n = Integer.parseInt(br.readLine());
+			Map<Integer, String> map = new HashMap<>();
 			
 			for (int i = 0; i < n; i++) {
-				String word = br.readLine();
-				set.add(word);
+				StringTokenizer st = new StringTokenizer(br.readLine());
+				map.put(Integer.parseInt(st.nextToken()), st.nextToken());
 			}
 			
-			int count = 0;
-			for (int i = 0; i < m; i++) {
-				String word = br.readLine();
-				if (set.contains(word)) {
-					count++;
-				}
-			}
-			bw.write(Integer.toString(count));
 			
+			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
