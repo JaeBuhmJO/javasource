@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * 반대로 모든 DATABASE 작업은 Dao에서 다한다
  */
 
-public class DeptDao {
+public class DeptDAO {
 
 	private Connection con;
 	private PreparedStatement pstmt;
@@ -102,15 +102,15 @@ public class DeptDao {
 //				String loc = rs.getString(3);
 //				DeptDTO dto = new DeptDTO(deptno, dname, loc);
 //				list.add(dto);
-				
+
 //				list.add(new DeptDTO(rs.getInt(1),rs.getString(2),rs.getString(3)));
-				
+
 				DeptDTO dto = new DeptDTO();
 				dto.setDeptno(rs.getInt(1));
 				dto.setDname(rs.getString(2));
 				dto.setLoc(rs.getString(3));
 				list.add(dto);
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -118,5 +118,79 @@ public class DeptDao {
 			close(con, pstmt, rs);
 		}
 		return list;
+	}
+
+	public boolean insert(DeptDTO dto) {
+		boolean status = false;
+		try {
+			con = getConnection();
+			String sql = "insert into dept_temp values (?,?,?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, dto.getDeptno());
+			pstmt.setString(2, dto.getDname());
+			pstmt.setString(3, dto.getLoc());
+			int result = pstmt.executeUpdate();
+			if (result > 0) {
+				status = true;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt);
+		}
+		return status;
+	}
+
+	public boolean delete(DeptDTO dto) {
+		boolean status = false;
+		try {
+			con = getConnection();
+			String sql = "DELETE DEPT_TEMP WHERE DEPTNO=? and DNAME=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, dto.getDeptno());
+			pstmt.setString(2, dto.getDname());
+
+			int result = pstmt.executeUpdate();
+
+			if (result > 0) {
+				status = true;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt);
+		}
+		return status;
+	}
+
+	public boolean update(String value, int deptno, int option) {
+		boolean status = false;
+		try {
+			con = getConnection();
+
+			String sql = "";
+			if (option == 1) {
+				sql = "update dept_temp set dname=? where deptno=?";
+			} else if (option == 2) {
+				sql = "update dept_temp set loc=? where deptno=?";
+			}
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, value);
+			pstmt.setInt(2, deptno);
+
+			int result = pstmt.executeUpdate();
+
+			if (result > 0) {
+				status = true;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt);
+		}
+		return status;
 	}
 }
