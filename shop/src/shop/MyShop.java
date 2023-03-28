@@ -34,10 +34,10 @@ public class MyShop implements IShop {
 
 	@Override
 	public void genProduct() {
-		products.add(new CellPhone("Samsung 갤럭시", 1000000, "kt"));
-		products.add(new CellPhone("Apple 아이폰", 1500000, "skt"));
-		products.add(new SmartTv("LG 올레드 TV", 2000000, "UHD"));
-		products.add(new SmartTv("삼성 QLED TV", 2500000, "4K"));
+		products.add(new CellPhone("갤럭시 노트 10", 500000, "SKT"));
+		products.add(new CellPhone("애플 아이폰 13", 900000, "U+"));
+		products.add(new SmartTv("삼성 3D Smart", 1500000, "4K"));
+		products.add(new SmartTv("LG Smart Tv", 1200000, "Full HD"));
 
 	}
 

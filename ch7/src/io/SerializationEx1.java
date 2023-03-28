@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Iterator;
 
 /* 직렬화(Serialization)
  * 객체를 데이터 스트링으로 만드는 것
@@ -35,14 +34,14 @@ public class SerializationEx1 {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		//직렬화된 객체 => 역직렬화(ObjectInputStream)
+
+		// 직렬화된 객체 => 역직렬화(ObjectInputStream)
 		try (FileInputStream fis = new FileInputStream("c:\\temp\\serial.dat");
 				BufferedInputStream bis = new BufferedInputStream(fis);
 				ObjectInputStream ois = new ObjectInputStream(bis)) {
 
 			for (int i = 0; i < 2; i++) {
-				Person p = (Person)ois.readObject();
+				Person p = (Person) ois.readObject();
 				System.out.println(p);
 			}
 

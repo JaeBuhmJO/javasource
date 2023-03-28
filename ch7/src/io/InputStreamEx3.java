@@ -1,7 +1,6 @@
 package io;
 
 import java.io.InputStream;
-import java.util.Arrays;
 
 public class InputStreamEx3 {
 

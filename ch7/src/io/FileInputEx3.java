@@ -2,8 +2,6 @@ package io;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.PrintStream;
-import java.nio.CharBuffer;
 
 public class FileInputEx3 {
 
@@ -81,7 +79,7 @@ public class FileInputEx3 {
 //		}
 
 	}
-	
+
 	public static void printline(int row) {
 		System.out.print(row++ + "\t");
 	}
