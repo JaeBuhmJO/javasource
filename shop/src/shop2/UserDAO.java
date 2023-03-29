@@ -75,7 +75,10 @@ public class UserDAO {
 		try {
 			con = getConnection();
 
-			String sql = "select * from suser";
+//			String sql = "select * from suser";
+			
+			String sql = "SELECT u.USER_ID, u.NAME, U.PAY_NO, p.INFO "
+					+ "FROM SUSER U JOIN PAYTYPE P ON U.PAY_NO = P.PAY_NO ";
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
@@ -84,6 +87,7 @@ public class UserDAO {
 				userDTO.setUserid(rs.getInt(1));
 				userDTO.setName(rs.getString(2));
 				userDTO.setPayno(rs.getInt(3));
+				userDTO.setType(rs.getString(4));
 				list.add(userDTO);
 			}
 

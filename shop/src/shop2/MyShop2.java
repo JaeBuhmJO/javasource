@@ -6,14 +6,13 @@ import java.util.Scanner;
 public class MyShop2 implements IShop {
 
 	private String title;
-	UserDTO[] users = new UserDTO[2];
-	Product[] products = new Product[4];
-	Product carts[] = new Product[10];
-	Scanner sc = new Scanner(System.in);
-	private int seluser;
+	private int selUser;
 
 	ProductDAO productDAO = new ProductDAO();
 	UserDAO userDAO = new UserDAO();
+	OrderDAO orderDAO = new OrderDAO();
+	
+	Scanner sc = new Scanner(System.in);
 
 	@Override
 	public void setTitle(String title) {
@@ -22,7 +21,6 @@ public class MyShop2 implements IShop {
 
 	@Override
 	public void genUser() {
-		// user 정보를 입력받아서 suser 테이블에 저장
 		System.out.println("***** User 입력 *****");
 		UserDTO userDTO = new UserDTO();
 		System.out.print("유저 id 입력 : ");
@@ -65,25 +63,31 @@ public class MyShop2 implements IShop {
 	public void start() {
 		System.out.println(title + " : 메인화면 - 계정 선택");
 		System.out.println("===========================");
-		for (int i = 0; i < users.length; i++) {
-//			System.out.printf("[%d]%s(%s)\n", i, users[i].getName(), users[i].getPayType());
+
+		// 전체 user 정보 출력
+		List<UserDTO> list = userDAO.getList();
+		System.out.println("UserID\tName\tPayno");
+		for (UserDTO userDTO : list) {
+			System.out.print(userDTO.getUserid() + "\t");
+			System.out.print(userDTO.getName() + "\t");
+//			System.out.print(userDTO.getPayno()+"\t");
+			System.out.println(userDTO.getType());
 		}
+
 		System.out.println("[x]종  료");
 		System.out.print("선택 : ");
 		String sel = sc.nextLine();
 		System.out.println("## " + sel + " 선택 ##");
 
-		// 0,1 => productList() 호출
-		// 다른걸 입력 시 => 메뉴를 확인해주세요
 		switch (sel) {
 		case "x":
 		case "X":
 			System.exit(0); // 프로그램 종료
 			break;
-		case "0":
-		case "1":
+		case "1000":
+		case "1001":
+			selUser = Integer.parseInt(sel);
 			productList();
-			seluser = Integer.parseInt(sel);
 			break;
 		default:
 			System.out.println("메뉴를 확인해주세요\n");
@@ -93,29 +97,32 @@ public class MyShop2 implements IShop {
 	}
 
 	public void productList() {
-		for (int i = 0; i < products.length; i++) {
-			System.out.printf("[%d]", i);
-			products[i].printDetail();
-			products[i].printExtra();
+		System.out.println();
+		System.out.println(title + " : 상품 목록 - 상품 선택");
+		System.out.println("==========================");
+
+		List<ProductDTO> list = productDAO.getList();
+		System.out.println("No\tPname\t\tPrice\t  Content");
+		System.out.println("------------------------------------------");
+
+		for (ProductDTO product : list) {
+			System.out.print(product.getProductId() + "\t");
+			System.out.print(product.getPname() + "\t");
+			System.out.print(product.getPrice() + "\t  ");
+			System.out.print(product.getContent() + "\n");
 		}
+
 		System.out.println("[h] 메인 화면");
 		System.out.println("[c] 체크 아웃");
 		System.out.print("선택 : ");
 		String sel = sc.nextLine();
-		// 상품 선택 시 0~3 - cart에 제품 추가, 다시 상품 목록 호출
-		// 메뉴 선택 시 h - start(),c - checkout 호출
 
 		switch (sel) {
-		case "0":
-		case "1":
-		case "2":
-		case "3":
-			for (int i = 0; i < carts.length; i++) {
-				if (carts[i] == null) {
-					carts[i] = products[Integer.parseInt(sel)];
-					break;
-				}
-			}
+		case "1001":
+		case "1002":
+		case "2001":
+		case "2002":
+			System.out.println(orderDAO.insert(selUser, Integer.parseInt(sel)) ? "상품이 장바구니에 담겼습니다" : "구매 오류");
 			productList();
 			break;
 		case "h":
@@ -136,12 +143,20 @@ public class MyShop2 implements IShop {
 		System.out.println("MyShop : 체크아웃");
 		System.out.println("=====================");
 		int payTotal = 0;
-		for (int i = 0; i < carts.length; i++) {
-			if (carts[i] != null) {
-				System.out.printf("[%d]%s(%d원)\n", i, carts[i].getName(), carts[i].getPrice());
-				payTotal += carts[i].getPrice();
-			}
+		List<OrderDTO> list = orderDAO.carts(selUser);
+		for (OrderDTO orderDTO : list) {
+			System.out.print(orderDTO.getUserDTO().getUserid()+"\t");
+			System.out.print(orderDTO.getUserDTO().getName()+"\t");
+			System.out.print(orderDTO.getPayType()+"\t");
+			System.out.print(orderDTO.getProductDTO().getProductId()+"\t");
+			System.out.print(orderDTO.getProductDTO().getPname()+"\t");
+			int price = orderDTO.getProductDTO().getPrice();
+			System.out.print(price+"\t");
+			payTotal+=price;
+			System.out.print(orderDTO.getProductDTO().getContent()+"\t");
+			System.out.println(orderDTO.getOrderDate());
 		}
+
 //		System.out.println("결제방법 : " + users[seluser].getPayType());
 		System.out.println("결제금액 합계 : " + payTotal + "원 입니다.");
 		System.out.println("[p] 이전, [q] 결제완료");
@@ -155,6 +170,7 @@ public class MyShop2 implements IShop {
 			break;
 		case "q":
 		case "Q":
+			// sorder.delete(userId)
 			System.out.println("결제가 완료되었습니다.");
 			System.exit(0);
 		default:
