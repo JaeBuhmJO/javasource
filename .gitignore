@@ -3,7 +3,6 @@
 
 #----강의본---
 .classpath
-.project
 #[crsa]*/.gitignore
 a_Prac/
 
@@ -12,7 +11,6 @@ a_Prac/
 .classpath
 !/*.gitignore
 /*/*.gitignore
-/*/*.project
 a_Prac/
 
 ### Eclipse ###

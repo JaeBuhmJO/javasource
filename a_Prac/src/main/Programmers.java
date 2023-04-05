@@ -1,38 +1,32 @@
 package main;
 
+import java.util.Arrays;
+
 public class Programmers {
 	public static void main(String[] args) {
 		Solution1 solution = new Solution1();
 
-		String new_id = "...!@BaT#*..y.abcdefghijklm";
+		String s = "  try  hello   world   ";
 
-		System.out.println(solution.solution(new_id));
+		System.out.println(solution.solution(s));
 	}
 }
 
 class Solution1 {
-	public String solution(String new_id) {	
-		//1단계
-		String answer = new_id.toLowerCase();
-		
-		//2단계
+	public String solution(String s) {
+		StringBuilder sb = new StringBuilder();
+		String[] words = s.split("");
 
-		
-		//3단계
-		
-				
-		//4단계
-
-				
-		//5단계
-				
-				
-		//6단계
-				
-				
-		//7단계
-		
-		
+		for (int i = 0; i < words.length; i++) {
+			for (int j = 0; j < words[i].length(); j++) {
+				if (j % 2 == 0) {
+					sb.append(Character.toUpperCase(words[i].charAt(j)));
+				} else {
+					sb.append(Character.toLowerCase(words[i].charAt(j)));
+				}
+			}
+		}
+		String answer = sb.toString();
 		return answer;
 	}
 }

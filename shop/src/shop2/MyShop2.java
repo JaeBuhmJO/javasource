@@ -11,7 +11,7 @@ public class MyShop2 implements IShop {
 	ProductDAO productDAO = new ProductDAO();
 	UserDAO userDAO = new UserDAO();
 	OrderDAO orderDAO = new OrderDAO();
-	
+
 	Scanner sc = new Scanner(System.in);
 
 	@Override
@@ -144,16 +144,17 @@ public class MyShop2 implements IShop {
 		System.out.println("=====================");
 		int payTotal = 0;
 		List<OrderDTO> list = orderDAO.carts(selUser);
+
 		for (OrderDTO orderDTO : list) {
-			System.out.print(orderDTO.getUserDTO().getUserid()+"\t");
-			System.out.print(orderDTO.getUserDTO().getName()+"\t");
-			System.out.print(orderDTO.getPayType()+"\t");
-			System.out.print(orderDTO.getProductDTO().getProductId()+"\t");
-			System.out.print(orderDTO.getProductDTO().getPname()+"\t");
+			System.out.print(orderDTO.getUserDTO().getUserid() + "\t");
+			System.out.print(orderDTO.getUserDTO().getName() + "\t");
+			System.out.print(orderDTO.getPayType() + "\t");
+			System.out.print(orderDTO.getProductDTO().getProductId() + "\t");
+			System.out.print(orderDTO.getProductDTO().getPname() + "\t");
 			int price = orderDTO.getProductDTO().getPrice();
-			System.out.print(price+"\t");
-			payTotal+=price;
-			System.out.print(orderDTO.getProductDTO().getContent()+"\t");
+			System.out.print(price + "\t");
+			payTotal += price;
+			System.out.print(orderDTO.getProductDTO().getContent() + "\t");
 			System.out.println(orderDTO.getOrderDate());
 		}
 
