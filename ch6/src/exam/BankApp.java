@@ -6,10 +6,10 @@ public class BankApp {
 
 	// 인스턴스 변수(초기화 완료)
 	// main 메소드 밖에 만든 이유 : 다른 메소드에서 사용하기 위해서. 변수 유효범위
+
 	private static Account[] accountArray = new Account[10]; // Account 객체 배열 10개 선언, 생성
 	private static Scanner scanner = new Scanner(System.in); // 사용자 입력용
 	private static int totalAccountNum = 0;
-
 	public static void main(String[] args) {
 
 		boolean run = true;

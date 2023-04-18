@@ -3,9 +3,10 @@
 
 #----강의본---
 .classpath
-#[crsa]*/.gitignore
-a_Prac/
-
+.project
+#영어 소문자로 시작하는 폴더 안 ignore 파일 무시
+[a-z]*/.gitignore
+Servers/
 
 #----내가쓴거---
 .classpath
