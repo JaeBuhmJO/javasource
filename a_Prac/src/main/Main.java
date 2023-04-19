@@ -4,57 +4,65 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
+	static ArrayList<PriorityQueue<Integer>> graph;
+	static int[] visited;
+	static Queue<Integer> q = new ArrayDeque<>();
+	static int order;
+
 	public static void main(String args[]) {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out))) {
 
 			StringTokenizer st = new StringTokenizer(br.readLine());
+			int nodes = Integer.parseInt(st.nextToken());
+			int lines = Integer.parseInt(st.nextToken());
+			int start = Integer.parseInt(st.nextToken());
 
-			int n = Integer.parseInt(st.nextToken());
-
-			boolean[] primes = new boolean[n + 1];
-			Arrays.fill(primes, true);
-			primes[0] = false;
-			primes[1] = false;
-
-			for (int i = 2; i < primes.length; i++) {
-				for (int j = i * i; j < primes.length; j += i) {
-					primes[j] = false;
-				}
+			graph = new ArrayList<>();
+			for (int i = 0; i < nodes + 1; i++) {
+				graph.add(new PriorityQueue<>());
 			}
 
-			ArrayList<Integer> primeList = new ArrayList<>();
-
-			int num = 0;
-			for (boolean isPrime : primes) {
-				if (isPrime) {
-					primeList.add(num);
-				}
-				num++;
+			for (int i = 0; i < lines; i++) {
+				st = new StringTokenizer(br.readLine());
+				int node1 = Integer.parseInt(st.nextToken());
+				int node2 = Integer.parseInt(st.nextToken());
+				graph.get(node1).add(node2);
+				graph.get(node2).add(node1);
 			}
 
-			int start = 0;
-			int end = 0;
-			int sum = 0;
-			int count = 0;
+			visited = new int[nodes + 1];
+			bfs(start);
 
-			while (end < primeList.size()) {
-				sum += primeList.get(end++);
-				while (sum >= n) {
-					if (sum == n) {
-						count++;
-					}
-					sum -= primeList.get(start++);
-				}
+			for (int i = 1; i < visited.length; i++) {
+				bw.write(visited[i] + "\n");
 			}
-			bw.write(count + "");
+
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	public static void bfs(int visitNode) {
+		order = 1;
+		visited[visitNode] = order++;
+		q.offer(visitNode);
+		while (!q.isEmpty()) {
+			int node = q.poll();
+			for (int i = 0; i < graph.size() && !graph.get(node).isEmpty(); i++) {
+				int adj = graph.get(node).poll();
+				if (visited[adj] == 0) {
+					visited[adj] = order++;
+					q.offer(adj);
+				}
+			}
 		}
 	}
 }
