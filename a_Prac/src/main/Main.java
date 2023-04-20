@@ -4,45 +4,47 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.PriorityQueue;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.Queue;
-import java.util.StringTokenizer;
 
 public class Main {
-	static ArrayList<PriorityQueue<Integer>> graph;
-	static int[] visited;
-	static Queue<Integer> q = new ArrayDeque<>();
-	static int order;
+	static int[][] map;
+	static boolean[][] visited;
+	static int houses;
 
 	public static void main(String args[]) {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out))) {
 
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			int nodes = Integer.parseInt(st.nextToken());
-			int lines = Integer.parseInt(st.nextToken());
-			int start = Integer.parseInt(st.nextToken());
+			int n = Integer.parseInt(br.readLine());
 
-			graph = new ArrayList<>();
-			for (int i = 0; i < nodes + 1; i++) {
-				graph.add(new PriorityQueue<>());
+			map = new int[n][n];
+			visited = new boolean[n][n];
+
+			for (int i = 0; i < n; i++) {
+				String[] mapLine = br.readLine().split("");
+				for (int j = 0; j < n; j++) {
+					map[i][j] = Integer.parseInt(mapLine[j]);
+				}
 			}
 
-			for (int i = 0; i < lines; i++) {
-				st = new StringTokenizer(br.readLine());
-				int node1 = Integer.parseInt(st.nextToken());
-				int node2 = Integer.parseInt(st.nextToken());
-				graph.get(node1).add(node2);
-				graph.get(node2).add(node1);
+			ArrayList<Integer> cluster = new ArrayList<>();
+			for (int i = 0; i < n; i++) { // y축
+				for (int j = 0; j < n; j++) { // x축
+					if (!visited[i][j] && map[i][j] == 1) {
+						houses = 0;
+						bfs(j, i);
+						cluster.add(houses);
+					}
+				}
 			}
 
-			visited = new int[nodes + 1];
-			bfs(start);
-
-			for (int i = 1; i < visited.length; i++) {
-				bw.write(visited[i] + "\n");
+			Collections.sort(cluster);
+			bw.write(cluster.size() + "\n");
+			for (Integer integer : cluster) {
+				bw.write(integer + "\n");
 			}
 
 		} catch (Exception e) {
@@ -50,18 +52,43 @@ public class Main {
 		}
 	}
 
-	public static void bfs(int visitNode) {
-		order = 1;
-		visited[visitNode] = order++;
-		q.offer(visitNode);
-		while (!q.isEmpty()) {
-			int node = q.poll();
-			for (int i = 0; i < graph.size() && !graph.get(node).isEmpty(); i++) {
-				int adj = graph.get(node).poll();
-				if (visited[adj] == 0) {
-					visited[adj] = order++;
-					q.offer(adj);
-				}
+	static void bfs(int x, int y) {
+		Queue<int[]> queue = new LinkedList<>();
+		houses += 1;
+		visited[y][x] = true;
+		int[] coor = { x, y };
+		queue.offer(coor);
+		while (!queue.isEmpty()) {
+			int[] node = queue.poll();
+			int nodeX = node[0];
+			int nodeY = node[1];
+			if (nodeX >= 0 && nodeX < visited.length && nodeY - 1 >= 0 && nodeY - 1 < visited.length
+					&& !visited[nodeY - 1][nodeX]) {
+				visited[nodeY - 1][nodeX] = true;
+				houses += 1;
+				int[] coorNext = { nodeX, nodeY - 1 };
+				queue.offer(coorNext);
+			}
+			if (nodeX - 1 >= 0 && nodeX - 1 < visited.length && nodeY >= 0 && nodeY < visited.length
+					&& !visited[nodeY][nodeX - 1]) {
+				visited[nodeY][nodeX - 1] = true;
+				houses += 1;
+				int[] coorNext = { nodeX - 1, nodeY };
+				queue.offer(coorNext);
+			}
+			if (nodeX >= 0 && nodeX < visited.length && nodeY + 1 >= 0 && nodeY + 1 < visited.length
+					&& !visited[nodeY + 1][nodeX]) {
+				visited[nodeY + 1][nodeX] = true;
+				houses += 1;
+				int[] coorNext = { nodeX, nodeY + 1 };
+				queue.offer(coorNext);
+			}
+			if (nodeX + 1 >= 0 && nodeX + 1 < visited.length && nodeY >= 0 && nodeY < visited.length
+					&& !visited[nodeY][nodeX + 1]) {
+				visited[nodeY][nodeX + 1] = true;
+				houses += 1;
+				int[] coorNext = { nodeX + 1, nodeY };
+				queue.offer(coorNext);
 			}
 		}
 	}
