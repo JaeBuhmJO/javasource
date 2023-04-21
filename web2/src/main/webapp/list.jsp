@@ -42,6 +42,7 @@ ResultSet rs = pstmt.executeQuery(); //쿼리문 실행한 후 결과 전송
 		<tr>
 			<th scope="row"><%=rs.getInt("no") %></th>
 			<td><a href="get.jsp?no=<%=rs.getInt("no") %>"><%=rs.getString("username") %></a></td>
+			<!-- get방식:/ https://naver.com?q=영화&age=15&addr=서울 /많은 데이터를 보낼 수 없고, 데이터가 노출됨 -->
 			<td><%=rs.getInt("birthyear") %></td>
 			<td><%=rs.getString("addr") %></td>
 			<td><%=rs.getString("mobile") %></td>
