@@ -93,6 +93,13 @@ public class UserDAO {
 				int birthyear = rs.getInt("birthyear");
 				String addr = rs.getString("addr");
 				String mobile = rs.getString("mobile");
+				list.add(new UserDTO(no, username, birthyear, addr, mobile));
+//				userDTO.setNo(no);
+//				userDTO.setUsername(username);
+//				userDTO.setBirthYear(birthyear);
+//				userDTO.setAddr(addr);
+//				userDTO.setMobile(mobile);
+//				list.add(userDTO);
 			}
 
 		} catch (Exception e) {
@@ -102,4 +109,84 @@ public class UserDAO {
 		}
 		return list;
 	}
+
+	public UserDTO getRow(int no) {
+		UserDTO dto = null;
+
+		try {
+			con = getConnection();
+
+			String sql = "select * from usertbl where no=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, no);
+
+			rs = pstmt.executeQuery();
+			pstmt.setInt(1, no);
+			while (rs.next()) {
+				String name = rs.getString("username");
+				int birthYear = rs.getInt("birthyear");
+				String addr = rs.getString("addr");
+				String mobile = rs.getString("mobile");
+				dto = new UserDTO(no, name, birthYear, addr, mobile);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return dto;
+	}
+
+	public boolean update(String newaddr, String newmobile, int no) {
+		boolean flag = false;
+		try {
+			con = getConnection();
+
+			if (newaddr != "") {
+				String sql = "update usertbl set addr=? where no=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, newaddr);
+			}
+			if (newmobile != "") {
+				String sql = "update usertbl set mobile=? where no=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, newmobile);
+			}
+			pstmt.setInt(2, no);
+
+			int result = pstmt.executeUpdate();
+			if (result > 0) {
+				flag = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt);
+		}
+		return flag;
+	}
+
+	public boolean remove(int no) {
+		boolean flag = false;
+
+		try {
+			con = getConnection();
+
+			String sql = "delete usertbl where no=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, no);
+
+			int count = pstmt.executeUpdate();
+			if (count > 0) {
+				flag = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt);
+		}
+		return flag;
+	}
+
 }
