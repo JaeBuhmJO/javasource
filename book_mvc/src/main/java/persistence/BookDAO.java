@@ -188,4 +188,28 @@ public class BookDAO {
 		}
 		return flag;
 	}
+
+	public List<BookDTO> searchList(String criteria, String keyword) {
+		List<BookDTO> list = new ArrayList<>();
+		try {
+			con = getConnection();
+			String sql = "select code, title, writer, price from booktbl where " + criteria + " like ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%" + keyword + "%");
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				BookDTO dto = new BookDTO();
+				dto.setCode(rs.getInt("code"));
+				dto.setTitle(rs.getString("title"));
+				dto.setWriter(rs.getString("writer"));
+				dto.setPrice(rs.getInt("price"));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return list;
+	}
 }
