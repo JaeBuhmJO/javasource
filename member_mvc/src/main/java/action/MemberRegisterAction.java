@@ -1,8 +1,10 @@
 package action;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import domain.MemberDTO;
+import service.MemberLoginService;
 import service.MemberRegisterService;
 
 public class MemberRegisterAction implements Action {
@@ -18,13 +20,19 @@ public class MemberRegisterAction implements Action {
 		MemberRegisterService service = new MemberRegisterService();
 		boolean flag = service.register(new MemberDTO(userid, password, name, gender, email));
 
+		boolean isRedirect = true;
 		String path = "";
 		if (flag) {
+			MemberLoginService lgservice = new MemberLoginService();
+			MemberDTO loginDto = lgservice.login(userid, password);
+			HttpSession session = request.getSession();
+			session.setAttribute("loginDto", loginDto);
 			path = "index.jsp";
+			isRedirect = false;
 		} else {
 			path = "register.jsp";
 		}
-		return new ActionForward(false, path);
+		return new ActionForward(isRedirect, path);
 	}
 
 }

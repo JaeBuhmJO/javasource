@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.Arrays;
-import java.util.StringTokenizer;
 
 public class Main {
 	static boolean error = false;
@@ -14,18 +12,14 @@ public class Main {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out))) {
 
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			int houses = Integer.parseInt(st.nextToken());
-			int wifi = Integer.parseInt(st.nextToken());
-			int[] houseArr = new int[houses];
-			
-			for (int i = 0; i < houses; i++) {
-				houseArr[i]=Integer.parseInt(br.readLine());
+			int houses = Integer.parseInt(br.readLine());
+			int[][] dp = new int[houses + 1][3];
+			dp[0][0] = 0;
+			dp[0][1] = 0;
+			dp[0][2] = 0;
+			for (int i = 2; i <= houses; i++) {
+				
 			}
-			
-			Arrays.sort(houseArr);
-			
-			
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -9,6 +9,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import domain.ChangeDTO;
 import domain.MemberDTO;
 
 public class MemberDAO {
@@ -98,7 +99,7 @@ public class MemberDAO {
 			pstmt.setString(3, dto.getName());
 			pstmt.setString(4, dto.getGender());
 			pstmt.setString(5, dto.getEmail());
-			
+
 			int result = pstmt.executeUpdate();
 			if (result > 0) {
 				commit(con);
@@ -109,7 +110,73 @@ public class MemberDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			close(con, pstmt, rs);
+			close(con, pstmt);
+		}
+		return flag;
+	}
+
+	public boolean change(ChangeDTO dto) {
+		boolean flag = false;
+		try {
+			con = getConnection();
+			String sql = "update membertbl set password = ? where userid =?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, dto.getConfirmPassword());
+			pstmt.setString(2, dto.getUserid());
+			int result = pstmt.executeUpdate();
+
+			if (result > 0) {
+				flag = true;
+				commit(con);
+			}
+		} catch (Exception e) {
+			rollback(con);
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt);
+		}
+		return flag;
+	}
+
+	public boolean delete(MemberDTO dto) {
+		boolean flag = false;
+		try {
+			con = getConnection();
+			String sql = "delete membertbl where userid =? and password =?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, dto.getUserid());
+			pstmt.setString(2, dto.getPassword());
+			int result = pstmt.executeUpdate();
+			if (result > 0) {
+				commit(con);
+				flag = true;
+			}
+		} catch (Exception e) {
+			rollback(con);
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt);
+		}
+		return flag;
+	}
+
+	public boolean duplicateId(String newid) {
+		boolean flag = true;
+		try {
+			con = getConnection();
+			String sql = "select count(*) from membertbl where userid =?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, newid);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				if (rs.getInt(1) > 0) {
+					flag = false;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt);
 		}
 		return flag;
 	}
