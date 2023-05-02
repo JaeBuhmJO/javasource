@@ -18,7 +18,6 @@ public class FileEx1 {
 		
 		//file(URL url)
 		
-		
 		//주요 메소드
 		//getName() : 파일명 가져오기 (경로 제외)
 		String fileName = file1.getName();

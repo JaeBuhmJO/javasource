@@ -10,7 +10,6 @@
 <!-- 
 	form 안에 type=file 요소가 포함되었다면, enctype 설정해야 함
 		=>  enctype="multipart/form-data"
-
 -->
 	<form action="upload.jsp" method="post" enctype="multipart/form-data">
 		<div>
