@@ -16,7 +16,7 @@
   <c:forEach items="${list}" var="dto">
     <tr>
       <td>${dto.bno}</td>
-      <td><a href="#">${dto.title}</a></td>
+      <td><a href='<c:url value="/cntUpdate.do?bno=${dto.bno}"/>'>${dto.title}</a></td>
       <td>${dto.name}</td>
       <td>${dto.regDate}</td>
       <td>${dto.cnt}</td>

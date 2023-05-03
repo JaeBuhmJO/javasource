@@ -19,10 +19,8 @@ public class BoardUploadUtils {
 
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 		if (isMultipart) {
-			DiskFileItemFactory factory = new DiskFileItemFactory();
-
 			// Create a new file upload handler
-			ServletFileUpload upload = new ServletFileUpload(factory);
+			ServletFileUpload upload = new ServletFileUpload(new DiskFileItemFactory());
 			try {
 				// Parse the request
 				List<FileItem> items = upload.parseRequest(request);
@@ -43,7 +41,6 @@ public class BoardUploadUtils {
 					} else { // 파일요소
 						value = item.getName();
 						if (!name.isEmpty() && item.getSize() > 0) {
-
 							// 파일 저장
 							String path = "c:\\upload";
 
@@ -52,7 +49,6 @@ public class BoardUploadUtils {
 							File f = new File(path + "\\" + uuid.toString() + "_" + value); // c:\\upload\\test.html
 
 							formData.put(name, f.getName());
-
 							item.write(f); // 파일저장
 						}
 					}
