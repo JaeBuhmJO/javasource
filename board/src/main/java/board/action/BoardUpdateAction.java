@@ -1,10 +1,12 @@
 package board.action;
 
+import java.net.URLEncoder;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import board.domain.BoardDTO;
+import board.domain.PageDTO;
 import board.service.BoardUpdateService;
 import board.util.BoardUploadUtils;
 
@@ -27,13 +29,18 @@ public class BoardUpdateAction implements Action {
 			dto.setAttach(formData.get("attach"));
 		}
 
+		String criteria = formData.get("criteria");
+		String keyword= URLEncoder.encode(formData.get("keyword"),"utf-8");
+		String page = formData.get("page");
+		String amount = formData.get("amount");
+		
 		BoardUpdateService service = new BoardUpdateService();
 
 		String path = "";
 		if (service.update(dto)) {
-			path = "read.do?bno=" + bno;
+			path = "read.do?bno=" + bno+"&criteria="+criteria+"&keyword="+keyword+"&page="+page+"&amount="+amount;
 		} else {
-			path = "modify.do?bno=" + bno;
+			path = "modify.do?bno=" + bno+"&criteria="+criteria+"&keyword="+keyword+"&page="+page+"&amount="+amount;
 		}
 		return new ActionForward(true, path);
 	}

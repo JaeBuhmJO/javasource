@@ -1,6 +1,7 @@
 const readForm = document.querySelector("#readForm");
 document.querySelector(".btn-success").addEventListener("click", () => {
-	location.href = "list.do";
+	readForm.action = "list.do";
+	readForm.submit();
 })
 document.querySelector(".btn-secondary").addEventListener("click", () => {
 	readForm.action = "replyView.do";

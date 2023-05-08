@@ -101,6 +101,8 @@ public class BoardDAO {
 	public List<BoardDTO> getRows(PageDTO pageDTO) {
 		List<BoardDTO> list = new ArrayList<>();
 		try {
+			int start = pageDTO.getPage() * pageDTO.getAmount();
+			int end = (pageDTO.getPage() - 1) * pageDTO.getAmount();
 			con = getConnection();
 			String sql = "";
 			if (pageDTO.getCriteria().isEmpty()) {
@@ -111,15 +113,23 @@ public class BoardDAO {
 				sql += "WHERE ROWNUM <= ?) ";
 				sql += "WHERE RNUM > ? ";
 				pstmt = con.prepareStatement(sql);
-				int start = pageDTO.getPage() * pageDTO.getAmount();
-				int end = (pageDTO.getPage() - 1) * pageDTO.getAmount();
 				pstmt.setInt(1, start);
 				pstmt.setInt(2, end);
 			} else {
-				sql = "select bno, title, name, regdate, cnt, re_lev from board where upper(" + pageDTO.getCriteria()
-						+ ") like ? order by re_ref desc, re_seq";
+				// sql = "select bno, title, name, regdate, cnt, re_lev from board where upper("
+				// + pageDTO.getCriteria()
+				// + ") like ? order by re_ref desc, re_seq";
+				sql = "SELECT * ";
+				sql += "FROM (SELECT ROWNUM AS RNUM, bno, title, name, regdate, cnt, re_lev ";
+				sql += "FROM (SELECT bno, title, name, regdate, cnt, re_lev ";
+				sql += "FROM BOARD where + upper(" + pageDTO.getCriteria() + ") like ? ";
+				sql += "ORDER BY RE_REF DESC, RE_SEQ) ";
+				sql += "WHERE ROWNUM <= ?) ";
+				sql += "WHERE RNUM > ? ";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, "%" + pageDTO.getKeyword().toUpperCase() + "%");
+				pstmt.setInt(2, start);
+				pstmt.setInt(3, end);
 			}
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -165,6 +175,32 @@ public class BoardDAO {
 			close(con, pstmt, rs);
 		}
 		return dto;
+	}
+
+	public int totalRows(PageDTO pageDTO) {
+		int total = 0;
+		try {
+			con = getConnection();
+			String sql = "select count(*) from board ";
+
+			if (!pageDTO.getCriteria().isEmpty()) {
+				sql += "where upper(" + pageDTO.getCriteria() + ") like ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, "%" + pageDTO.getKeyword().toUpperCase() + "%");
+			} else {
+				pstmt = con.prepareStatement(sql);
+			}
+
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				total = rs.getInt(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return total;
 	}
 
 	public boolean readCnt(int bno) {

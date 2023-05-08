@@ -2,8 +2,10 @@
  * 
  */
 
+const modifyForm = document.querySelector("#modifyForm");
 document.querySelector(".btn-success").addEventListener("click", () => {
-	location.href = "list.do";
+	modifyForm.action = "list.do";
+	modifyForm.submit();
 })
 
 document.querySelector(".btn-danger").addEventListener("click", (e) => {
@@ -17,7 +19,6 @@ document.querySelector(".btn-danger").addEventListener("click", (e) => {
 		currPassword.select();
 		return;
 	}
-	const modifyForm = document.querySelector("#modifyForm");
 	modifyForm.action = "delete.do";
 	modifyForm.method = "post"
 	modifyForm.submit();
